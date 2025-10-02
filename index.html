@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GATE EE Preparation Tracker — PrepFusion</title>
+
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+  /* small extras */
+  .glow {
+    box-shadow: 0 6px 18px rgba(59,130,246,0.12), 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .topic-label { user-select: none; }
+</style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 via-slate-50 to-gray-100 min-h-screen p-6">
+  <div class="max-w-5xl mx-auto">
+    <header class="mb-6">
+      <h1 class="text-3xl md:text-4xl font-extrabold text-slate-800">🧭 GATE EE Preparation Tracker <span class="text-indigo-500">by PrepFusion</span></h1>
+      <p class="text-sm text-slate-500 mt-1">Track Syllabus, Previous Year Questions & Test Series. Progress auto-saved to your browser.</p>
+    </header>
+
+    <!-- Controls -->
+    <div class="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between mb-5">
+      <div class="flex gap-3 items-center">
+        <button id="resetBtn" class="px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded shadow-sm">Reset Progress</button>
+        <button id="exportBtn" class="px-3 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded shadow-sm">Export Progress</button>
+        <label class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-2 rounded cursor-pointer shadow-sm">
+          Import <input id="importFile" type="file" accept="application/json" class="hidden" />
+        </label>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <div class="text-sm text-slate-600">Total Completion:</div>
+        <div class="w-64 bg-slate-200 h-6 rounded-full overflow-hidden glow">
+          <div id="bar-total" class="h-6 rounded-full" style="width:0%; background: linear-gradient(90deg,#10b981,#3b82f6,#8b5cf6)"></div>
+        </div>
+        <div id="total-percent" class="ml-2 text-sm font-medium text-slate-800">0%</div>
+      </div>
+    </div>
+
+    <main class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Left: Section cards -->
+      <section class="space-y-6 md:col-span-2">
+        <!-- Section 1 -->
+        <article class="bg-white p-4 rounded-lg shadow-sm glow">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-lg font-semibold text-blue-600">Section 1 — Syllabus Completion <span id="sec1-num" class="text-slate-500 font-medium ml-2">60%</span></h2>
+            <div class="w-48 bg-slate-200 h-4 rounded-full overflow-hidden">
+              <div id="bar-sec1" class="h-4 rounded-full" style="width:0%; background: linear-gradient(90deg,#60a5fa,#3b82f6)"></div>
+            </div>
+          </div>
+
+          <!-- Topics list (weights match your message) -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <!-- Network Analysis (6%) -->
+            <fieldset class="border rounded p-2">
+              <legend class="px-2 font-medium">Network Analysis (6%)</legend>
+              <ul class="mt-2 space-y-1 text-sm">
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="1.5">Basics of Networks & Network Theorems — 1.5%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="1.75">Transient Analysis — 1.75%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.5">Phasor Diagram — 0.5%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.5">Resonance — 0.5%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.5">Complex Power — 0.5%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="1.0">Two Port Networks — 1%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.25">3-Phase & Magnetically Coupled — 0.25%</label></li>
+              </ul>
+            </fieldset>
+
+            <!-- Signals & Systems (6%) -->
+            <fieldset class="border rounded p-2">
+              <legend class="px-2 font-medium">Signals & Systems (6%)</legend>
+              <ul class="mt-2 space-y-1 text-sm">
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="1.5">Basics of Signals & Systems — 1.5%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.5">Continuous Time FS — 0.5%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="1.0">CTFT — 1%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="1.25">Laplace Transforms — 1.25%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="1.25">Z Transforms — 1.25%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.5">DTFS/DTFT/DFT/FFT — 0.5%</label></li>
+              </ul>
+            </fieldset>
+
+            <!-- Analog Electronics (3%) -->
+            <fieldset class="border rounded p-2">
+              <legend class="px-2 font-medium">Analog Electronics (3%)</legend>
+              <ul class="mt-2 space-y-1 text-sm">
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="1.0">Diode Circuits — 1%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.5">MOSFETs — 0.5%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="1.25">OpAmps — 1.25%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.25">BJTs — 0.25%</label></li>
+              </ul>
+            </fieldset>
+
+            <!-- Digital Electronics (3%) -->
+            <fieldset class="border rounded p-2">
+              <legend class="px-2 font-medium">Digital Electronics (3%)</legend>
+              <ul class="mt-2 space-y-1 text-sm">
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.5">Boolean Algebra & Logic Gates — 0.5%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="1.0">Combinational Circuits — 1%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="1.0">Sequential Circuits — 1%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.5">ADC & DAC — 0.5%</label></li>
+              </ul>
+            </fieldset>
+
+            <!-- Control System (5%) -->
+            <fieldset class="border rounded p-2">
+              <legend class="px-2 font-medium">Control System (5%)</legend>
+              <ul class="mt-2 space-y-1 text-sm">
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.25">Basics of Control System — 0.25%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.25">Signal Flow Graph & Block Diagram — 0.25%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.6">Time Response Analysis — 0.6%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.4">Routh-Hurwitz — 0.4%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.4">Root Locus — 0.4%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.2">Freq Response (2nd order) — 0.2%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.6">Polar Plot — 0.6%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.6">Nyquist Plot — 0.6%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.6">Bode Plots — 0.6%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.6">State Space Analysis — 0.6%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input type="checkbox" class="sec1-topic" data-weight="0.5">Controllers & Compensators — 0.5%</label></li>
+              </ul>
+            </fieldset>
+
+            <!-- Engineering Mathematics (7.8%) -->
+            <fieldset class="border rounded p-2">
+              <legend class="px-2 font-medium">Engineering Mathematics (7.8%)</legend>
+              <ul class="mt-2 space-y-1 text-sm">
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="1.8" type="checkbox">Linear Algebra — 1.8%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="0.5" type="checkbox">Limits/Continuity/Differentiability — 0.5%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="1.25" type="checkbox">Differential Calculus — 1.25%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="1.25" type="checkbox">Integral Calculus — 1.25%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="0.3" type="checkbox">Differential Equations — 0.3%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="0.45" type="checkbox">Vector Calculus — 0.45%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="0.45" type="checkbox">Complex Variable Analysis — 0.45%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="1.8" type="checkbox">Probability & Statistics — 1.8%</label></li>
+              </ul>
+            </fieldset>
+
+            <!-- General Aptitude (9%) -->
+            <fieldset class="border rounded p-2">
+              <legend class="px-2 font-medium">General Aptitude (9%)</legend>
+              <ul class="mt-2 space-y-1 text-sm">
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="1.6" type="checkbox">Verbal Aptitude — 1.6%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="3.8" type="checkbox">Quantitative Aptitude — 3.8%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="2.4" type="checkbox">Analytical Aptitude — 2.4%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="1.2" type="checkbox">Spatial Aptitude — 1.2%</label></li>
+              </ul>
+            </fieldset>
+
+            <!-- Electrical Machines (6.1%) -->
+            <fieldset class="border rounded p-2">
+              <legend class="px-2 font-medium">Electrical Machines (6.1%)</legend>
+              <ul class="mt-2 space-y-1 text-sm">
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="1.7" type="checkbox">Transformers — 1.7%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="1.7" type="checkbox">DC Machines — 1.7%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="1.45" type="checkbox">Induction Machines — 1.45%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="1.25" type="checkbox">Synchronous Machines — 1.25%</label></li>
+              </ul>
+            </fieldset>
+
+            <!-- Power System Analysis (5.7%) -->
+            <fieldset class="border rounded p-2">
+              <legend class="px-2 font-medium">Power System Analysis (5.7%)</legend>
+              <ul class="mt-2 space-y-1 text-sm">
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="1.8" type="checkbox">Transmission & Distribution — 1.8%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="0.6" type="checkbox">Economic Load Dispatch — 0.6%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="1.2" type="checkbox">Fault Analysis — 1.2%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="0.85" type="checkbox">Power System Stability — 0.85%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="0.65" type="checkbox">Load Flow Analysis — 0.65%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="0.6" type="checkbox">Protection & Generation — 0.6%</label></li>
+              </ul>
+            </fieldset>
+
+            <!-- Power Electronics (5%) -->
+            <fieldset class="border rounded p-2">
+              <legend class="px-2 font-medium">Power Electronics (5%)</legend>
+              <ul class="mt-2 space-y-1 text-sm">
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="0.5" type="checkbox">Power Semiconductor Devices — 0.5%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="1.7" type="checkbox">Phase Controlled Rectifiers — 1.7%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="1.4" type="checkbox">Choppers — 1.4%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="1.4" type="checkbox">Inverters — 1.4%</label></li>
+              </ul>
+            </fieldset>
+
+            <!-- Electromagnetics (2%) -->
+            <fieldset class="border rounded p-2">
+              <legend class="px-2 font-medium">Electromagnetic Field Theory (2%)</legend>
+              <ul class="mt-2 space-y-1 text-sm">
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="0.5" type="checkbox">Vector Algebra & Coord. Systems — 0.5%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="1.0" type="checkbox">Electrostatics — 1.0%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="0.5" type="checkbox">Magnetostatics & Time-Varying Fields — 0.5%</label></li>
+              </ul>
+            </fieldset>
+
+            <!-- Measurement (1.4%) -->
+            <fieldset class="border rounded p-2">
+              <legend class="px-2 font-medium">Electrical & Electronic Measurement (1.4%)</legend>
+              <ul class="mt-2 space-y-1 text-sm">
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="0.2" type="checkbox">Error Analysis — 0.2%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="0.75" type="checkbox">Analog Measuring Instruments — 0.75%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="0.2" type="checkbox">Bridges & Resistance Measurement — 0.2%</label></li>
+                <li><label class="flex items-center gap-2 topic-label"><input class="sec1-topic" data-weight="0.25" type="checkbox">Electronic Measurement — 0.25%</label></li>
+              </ul>
+            </fieldset>
+          </div>
+        </article>
+
+        <!-- Section 2 -->
+        <article class="bg-white p-4 rounded-lg shadow-sm glow">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-lg font-semibold text-emerald-600">Section 2 — Previous Year Questions <span id="sec2-num" class="text-slate-500 font-medium ml-2">20%</span></h2>
+            <div class="w-44 bg-slate-200 h-4 rounded-full overflow-hidden">
+              <div id="bar-sec2" class="h-4 rounded-full" style="width:0%; background: linear-gradient(90deg,#34d399,#10b981)"></div>
+            </div>
+          </div>
+
+          <ul class="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
+            <li><label class="flex items-center gap-2"><input class="sec2-topic" data-weight="2" type="checkbox">Network Analysis — 2%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec2-topic" data-weight="2" type="checkbox">Signals & Systems — 2%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec2-topic" data-weight="2" type="checkbox">Control Systems — 2%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec2-topic" data-weight="1" type="checkbox">Analog Electronics — 1%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec2-topic" data-weight="1" type="checkbox">Digital Electronics — 1%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec2-topic" data-weight="2" type="checkbox">Engineering Mathematics — 2%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec2-topic" data-weight="2" type="checkbox">General Aptitude — 2%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec2-topic" data-weight="2" type="checkbox">Electrical Machines — 2%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec2-topic" data-weight="2" type="checkbox">Power System Analysis — 2%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec2-topic" data-weight="2" type="checkbox">Power Electronics — 2%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec2-topic" data-weight="1" type="checkbox">Electromagnetic FT — 1%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec2-topic" data-weight="1" type="checkbox">Electrical & Electronic Measurement — 1%</label></li>
+          </ul>
+        </article>
+
+        <!-- Section 3 -->
+        <article class="bg-white p-4 rounded-lg shadow-sm glow">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-lg font-semibold text-purple-600">Section 3 — Test Series <span id="sec3-num" class="text-slate-500 font-medium ml-2">20%</span></h2>
+            <div class="w-44 bg-slate-200 h-4 rounded-full overflow-hidden">
+              <div id="bar-sec3" class="h-4 rounded-full" style="width:0%; background: linear-gradient(90deg,#a78bfa,#8b5cf6)"></div>
+            </div>
+          </div>
+
+          <ul class="grid grid-cols-1 md:grid-cols-3 gap-2 text-sm">
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="1" type="checkbox">Network Analysis Tests — 1%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="1" type="checkbox">Signals & Systems Tests — 1%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="1" type="checkbox">Control Systems Tests — 1%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="0.5" type="checkbox">Analog Electronics Tests — 0.5%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="0.5" type="checkbox">Digital Electronics Tests — 0.5%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="1" type="checkbox">Engineering Mathematics Tests — 1%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="1" type="checkbox">General Aptitude Tests — 1%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="1" type="checkbox">Electrical Machines Tests — 1%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="1" type="checkbox">Power System Analysis Tests — 1%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="1" type="checkbox">Power Electronics Tests — 1%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="0.5" type="checkbox">Electromagnetic FT Tests — 0.5%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="0.5" type="checkbox">Electrical & Electronic Measurement Tests — 0.5%</label></li>
+
+            <!-- Full Lengths -->
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="2" type="checkbox">Full Length - 1 — 2%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="2" type="checkbox">Full Length - 2 — 2%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="2" type="checkbox">Full Length - 3 — 2%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="2" type="checkbox">Full Length - 4 — 2%</label></li>
+            <li><label class="flex items-center gap-2"><input class="sec3-topic" data-weight="2" type="checkbox">Full Length - 5 — 2%</label></li>
+          </ul>
+        </article>
+      </section>
+
+      <!-- Right: Summary / Chart -->
+      <aside class="space-y-6">
+        <div class="bg-white p-4 rounded-lg shadow-sm glow">
+          <h3 class="font-semibold mb-2">Quick Summary</h3>
+          <ul class="text-sm text-slate-600 space-y-1">
+            <li>Section 1 target weight: <strong>60%</strong></li>
+            <li>Section 2 target weight: <strong>20%</strong></li>
+            <li>Section 3 target weight: <strong>20%</strong></li>
+            <li>Total possible: <strong>100%</strong></li>
+          </ul>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-sm glow">
+          <h3 class="font-semibold mb-3">Overall Progress</h3>
+          <canvas id="overallChart" width="300" height="300"></canvas>
+          <div class="mt-3 text-sm text-slate-600">Green = Completed, Gray = Remaining</div>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow-sm glow">
+          <h3 class="font-semibold mb-2">Tip</h3>
+          <ol class="list-decimal list-inside text-sm text-slate-600 space-y-1">
+            <li>Use the Export button before changing devices.</li>
+          </ol>
+        </div>
+      </aside>
+    </main>
+
+<!-- Footer -->
+<footer class="mt-8 text-center text-gray-400">
+  Made with ❤️ for the students of PrepFusion. Visit <a href="https://PrepFusion.in" target="_blank" class="text-indigo-400 underline">PrepFusion.in</a> for comprehensive courses.
+</footer>
+  </div>
+
+<script>
+/* ---------- Utility & state ---------- */
+const sections = [
+  { id: 'sec1', selector: '.sec1-topic' , target: 60 },
+  { id: 'sec2', selector: '.sec2-topic' , target: 20 },
+  { id: 'sec3', selector: '.sec3-topic' , target: 20 }
+];
+
+function toFixedTrim(n){ return (Math.round(n*100)/100).toFixed(2).replace(/\.00$/, ''); }
+
+/* ---------- Load / Save state helpers ---------- */
+function saveState() {
+  const obj = {};
+  sections.forEach(sec => {
+    const nodes = document.querySelectorAll(sec.selector);
+    nodes.forEach((cb, i) => obj[`${sec.id}_${i}`] = cb.checked);
+  });
+  localStorage.setItem('prepTracker_v1', JSON.stringify(obj));
+}
+
+function loadState() {
+  const raw = localStorage.getItem('prepTracker_v1');
+  if(!raw) return;
+  try{
+    const obj = JSON.parse(raw);
+    sections.forEach(sec => {
+      const nodes = document.querySelectorAll(sec.selector);
+      nodes.forEach((cb, i) => {
+        const val = obj.hasOwnProperty(`${sec.id}_${i}`) ? obj[`${sec.id}_${i}`] : cb.checked;
+        cb.checked = !!val;
+      });
+    });
+  }catch(e){ console.warn('Failed to parse saved state', e); }
+}
+
+/* ---------- Progress calculation ---------- */
+function calcSectionProgress(sec) {
+  const nodes = document.querySelectorAll(sec.selector);
+  let sum = 0;
+  nodes.forEach(cb => {
+    if(cb.checked) sum += parseFloat(cb.dataset.weight || 0);
+  });
+  // limit to section.target (but weights are defined to sum to target)
+  return Math.min(sum, sec.target);
+}
+
+function updateAll() {
+  // Update each section bar and numbers
+  let total = 0;
+  sections.forEach(sec => {
+    const val = calcSectionProgress(sec);
+    total += val;
+    document.getElementById(`${sec.id}-num`).innerText = toFixedTrim(val) + '%';
+    document.getElementById(`bar-${sec.id}`).style.width = toFixedTrim(val) + '%';
+  });
+
+  // Total
+  document.getElementById('total-percent').innerText = toFixedTrim(total) + '%';
+  document.getElementById('bar-total').style.width = toFixedTrim(total) + '%';
+
+  // Update Chart
+  updateChart(total);
+
+  // Save state
+  saveState();
+}
+
+/* ---------- Attach events ---------- */
+function attachListeners() {
+  sections.forEach(sec => {
+    const nodes = document.querySelectorAll(sec.selector);
+    nodes.forEach((cb) => {
+      cb.addEventListener('change', () => {
+        updateAll();
+      });
+    });
+  });
+
+  // Reset
+  document.getElementById('resetBtn').addEventListener('click', () => {
+    if(!confirm('Reset all progress locally? This will clear saved progress on this browser.')) return;
+    sections.forEach(sec => {
+      document.querySelectorAll(sec.selector).forEach(cb => cb.checked = false);
+    });
+    updateAll();
+    localStorage.removeItem('prepTracker_v1');
+  });
+
+  // Export
+  document.getElementById('exportBtn').addEventListener('click', () => {
+    const raw = localStorage.getItem('prepTracker_v1') || '{}';
+    const blob = new Blob([raw], {type: 'application/json'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'prepTracker_export.json';
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  // Import
+  document.getElementById('importFile').addEventListener('change', (ev) => {
+    const f = ev.target.files[0];
+    if(!f) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        JSON.parse(reader.result); // validate
+        localStorage.setItem('prepTracker_v1', reader.result);
+        loadState();
+        updateAll();
+        alert('Progress imported successfully!');
+      } catch(e) {
+        alert('Invalid JSON file.');
+      }
+    };
+    reader.readAsText(f);
+    ev.target.value = ''; // clear
+  });
+}
+
+/* ---------- Chart.js donut ---------- */
+let donutChart = null;
+function initChart() {
+  const ctx = document.getElementById('overallChart').getContext('2d');
+  donutChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Completed', 'Remaining'],
+      datasets: [{
+        data: [0, 100],
+        backgroundColor: ['#10b981', '#e6e7eb'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { position: 'bottom' },
+        tooltip: { callbacks: { label: ctx => ctx.label + ': ' + ctx.raw + '%' } }
+      },
+      cutout: '68%'
+    }
+  });
+}
+
+function updateChart(completed) {
+  if(!donutChart) return;
+  const c = Math.min(100, Number(completed.toFixed(2)));
+  donutChart.data.datasets[0].data = [c, Math.max(0, 100 - c)];
+  donutChart.update();
+}
+
+/* ---------- Init ---------- */
+(function init() {
+  // load saved
+  loadState();
+  attachListeners();
+  initChart();
+  updateAll();
+})();
+
+</script>
+</body>
+</html>
+
+
